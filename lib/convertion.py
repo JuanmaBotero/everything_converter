@@ -10,7 +10,7 @@ class Convertion:
     unit_from = ""
     unit_to = ""
 
-    def __init__(self, value = 0):
+    def __init__(self, value = 1):
         self.ammount = value
 
     def of(self, value = ""):
@@ -22,8 +22,11 @@ class Convertion:
         return self
 
     def convert(self):
-        request = API.request(self.CONVERTION_URL.format(self.ammount, self.unit_from, self.unit_to))
+        request = API.request(self.CONVERTION_URL.format(self.ammount, self.unit_from, self.unit_to)).text
         result = API.find(request, self.RESULT_CRITERIA, self.END_CRITERIA)
+        
+        result = float(result.replace(",", ""))
+        result = "{0:.2f}".format(result)
 
-        return result if result != self.INVALID_RESULT else 0
+        return float(result) if result != self.INVALID_RESULT else 0
         
